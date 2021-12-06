@@ -43,7 +43,7 @@ public class Main {
                 Scanner reader = new Scanner(logInDetails);
                 while (reader.hasNextLine()) {
                     String data = reader.nextLine();
-                    if ((data.contains(username)) && (data.contains(password))) {
+                    if ((data.contains(username)) && (data.contains(Integer.toString(password.hashCode())))) {
                         System.out.println("Login Successful");
                         break A;
                     }
@@ -83,10 +83,11 @@ public class Main {
             }
             System.out.println("Invalid Password, needs to contain capital letters");
         }
+        int hashPW = password.hashCode();
         //Writes to file
         try {
             FileWriter myWriter = new FileWriter(logInDetails.getName(), true);
-            myWriter.write(email + " " + password + "\n");
+            myWriter.write(email + " " + hashPW + "\n");
             myWriter.close();
 
         }catch(Exception e){
