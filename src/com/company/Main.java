@@ -4,16 +4,97 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
     private static final File bookStore = new File("Books.txt");
+    private static final File logInDetails = new File("LogIn.txt");
     private static final ArrayList<String> bookList = new ArrayList<>();
     private static final Scanner input = new Scanner(System.in);
     public static void main(String[] args) {
+        A: while(true) {
+            System.out.println("Login or Register:");
+            String response = input.next();
+            if (response.equalsIgnoreCase("login")) {
+                Login();
+                break A;
+
+            } else if (response.equalsIgnoreCase("register")) {
+                Register();
+                Login();
+                break A;
+            } else {
+                System.out.println("Invalid response");
+            }
+        }
         CreateFile();
+        MainMenu();
+    }
+
+    private static void Login(){
+        try {
+            A:while(true) {
+                System.out.println("What is your login:");
+                String username = input.next();
+                String password = input.next();
+                Scanner reader = new Scanner(logInDetails);
+                while (reader.hasNextLine()) {
+                    String data = reader.nextLine();
+                    if ((data.contains(username)) && (data.contains(password))) {
+                        System.out.println("Login Successful");
+                        break A;
+                    }
+                }
+                System.out.println("Email/Password not found");
+            }
+
+        }catch(Exception e){
+            System.out.println(e);
+        }
+
+    }
+
+    private static void Register(){
+        String email;
+        String password;
+        while (true) {
+            System.out.println("Input your email address:");
+            email = input.next();
+            if (!((email.contains("@")) && (email.contains(".com")))) {
+                System.out.println("Invalid email");
+            } else {
+                break;
+            }
+        }
+        //Checks password for specific format
+        A : while(true) {
+            System.out.println("Input your password:");
+            password = input.next();
+            for (char i : password.toCharArray()) {
+                if (Character.isUpperCase(i)) {
+                    if ((password.length() >= 8)) {
+                        break A;
+                    }
+                    System.out.println("Invalid Password Length");
+                }
+            }
+            System.out.println("Invalid Password, needs to contain capital letters");
+        }
+        //Writes to file
+        try {
+            FileWriter myWriter = new FileWriter(logInDetails.getName(), true);
+            myWriter.write(email + " " + password + "\n");
+            myWriter.close();
+
+        }catch(Exception e){
+            System.out.println(e);
+        }
+    }
+
+    private static void MainMenu() {
         int i =0;
         while (true) {
             System.out.println("-Add a book (1)" +"\n" + "-Read File (2)" +"\n" + "-Delete file contents (3)" + "\n" + "-Delete file (4)" + "\n" + "-Search ISBN (5)");
@@ -141,6 +222,4 @@ public class Main {
             e.printStackTrace();
         }
     }
-
-
 }
