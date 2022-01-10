@@ -6,28 +6,24 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.sql.SQLOutput;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
     private static final File bookStore = new File("Books.txt");
     private static final File logInDetails = new File("LogIn.txt");
-    private static final ArrayList<String> bookList = new ArrayList<>();
     private static final Scanner input = new Scanner(System.in);
     public static void main(String[] args) {
-        A: while(true) {
+        while(true) {
             System.out.println("Login or Register:");
             String response = input.next();
             if (response.equalsIgnoreCase("login")) {
                 Login();
-                break A;
+                break;
 
             } else if (response.equalsIgnoreCase("register")) {
                 Register();
                 Login();
-                break A;
+                break;
             } else {
                 System.out.println("Invalid response");
             }
@@ -98,15 +94,13 @@ public class Main {
     }
 
     private static void MainMenu() {
-        int i =0;
         while (true) {
             System.out.println("-Add a book (1)" +"\n" + "-Read File (2)" +"\n" + "-Delete file contents (3)" + "\n" + "-Delete file (4)" + "\n" + "-Search ISBN (5)");
             try {
                 int menuChoice = input.nextInt();
                 if (menuChoice == 1) {
-                    addBookInfo();
-                    WriteToFile(readBookInfo(i));
-                    i++;
+                    book temp = addBookInfo();
+                    WriteToFile(temp.toString());
                 }
                 else if (menuChoice == 2){
                     ReadFile();
@@ -129,7 +123,6 @@ public class Main {
                 System.out.println(e);
                 input.next(); //Clears scanner of error
             }
-
         }
     }
 
@@ -143,31 +136,16 @@ public class Main {
         }
     }
 
-    /*private static void addBookInfo(){
-        //Adds info into an array
-        System.out.println("Type in your Book Title, ISBN, Author and Genre ");
-        String title = input.next();
-        int isbn = input.nextInt();
-        String author = input.next();
-        String genre = input.next();
-        bookList.add(title + "," + Integer.toString(isbn) + "," + author + ","+genre);
-    }*/
-    private static void addBookInfo(){
+    private static book addBookInfo(){
         System.out.println("Type in your Book Title, ISBN, Author and Genre ");
         String title = input.next();
         int isbn = input.nextInt();
         String author = input.next();
         String genre = input.next();
         book books = new book(title,isbn,author,genre);
+        return books;
     }
 
-
-    public static String readBookInfo(int num) {
-        //Splits book details at each comma
-        String[] bookDetails = bookList.get(num).split(",");
-        System.out.println(Arrays.toString(bookDetails));
-        return (Arrays.toString(bookDetails));
-    }
     public static void CreateFile() {
         try {
             if (bookStore.createNewFile()) {
@@ -225,7 +203,7 @@ public class Main {
                 }
             }
             myReader.close();
-            if (check == true){
+            if (check){
                 System.out.println("ISBN not found");
             }
             System.out.println(" ");
