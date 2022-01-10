@@ -1,5 +1,7 @@
 package com.company;
 
+import com.company.objects.book;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -141,7 +143,7 @@ public class Main {
         }
     }
 
-    private static void addBookInfo(){
+    /*private static void addBookInfo(){
         //Adds info into an array
         System.out.println("Type in your Book Title, ISBN, Author and Genre ");
         String title = input.next();
@@ -149,7 +151,16 @@ public class Main {
         String author = input.next();
         String genre = input.next();
         bookList.add(title + "," + Integer.toString(isbn) + "," + author + ","+genre);
+    }*/
+    private static void addBookInfo(){
+        System.out.println("Type in your Book Title, ISBN, Author and Genre ");
+        String title = input.next();
+        int isbn = input.nextInt();
+        String author = input.next();
+        String genre = input.next();
+        book books = new book(title,isbn,author,genre);
     }
+
 
     public static String readBookInfo(int num) {
         //Splits book details at each comma
