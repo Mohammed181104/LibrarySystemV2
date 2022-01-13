@@ -4,6 +4,7 @@ import com.company.objects.book;
 import com.company.objects.fileModifiers;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.util.Scanner;
 
@@ -126,12 +127,36 @@ public class Main {
     }
 
     private static book addBookInfo(){
-        System.out.println("Type in your Book Title, ISBN, Author and Genre ");
+        System.out.println("Type in your Book Title, ISBN, Author, Genre and Owner");
         String title = input.next();
         int isbn = input.nextInt();
         String author = input.next();
         String genre = input.next();
-        return new book(title,isbn,author,genre);
+        String owner = input.next();
+        return new book(title,isbn,author,genre,owner);
+    }
+
+    public static void SearchLocation(String bookName) {
+        try {
+            Scanner myReader = new Scanner(bookStore);
+            boolean check = true;
+            while (myReader.hasNextLine()) {
+                String data = myReader.nextLine();
+                if(data.contains(bookName)) {
+                    String[] result = data.split(", ");
+                    System.out.println(result[4]);
+                    check = false;
+                }
+            }
+            myReader.close();
+            if (check){
+                System.out.println("ISBN not found");
+            }
+            System.out.println(" ");
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
     }
 
 }
