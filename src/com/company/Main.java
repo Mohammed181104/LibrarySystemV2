@@ -1,17 +1,16 @@
 package com.company;
 
 import com.company.objects.book;
+import com.company.objects.fileModifiers;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
-    private static final File bookStore = new File("Books.txt");
-    private static final File logInDetails = new File("LogIn.txt");
-    private static final Scanner input = new Scanner(System.in);
+    public static File bookStore = new File("Books.txt");
+    public static final File logInDetails = new File("LogIn.txt");
+    public static Scanner input = new Scanner(System.in);
     public static void main(String[] args) {
         while(true) {
             System.out.println("Login or Register:");
@@ -28,7 +27,7 @@ public class Main {
                 System.out.println("Invalid response");
             }
         }
-        CreateFile();
+        fileModifiers.CreateFile();
         MainMenu();
     }
 
@@ -100,21 +99,21 @@ public class Main {
                 int menuChoice = input.nextInt();
                 if (menuChoice == 1) {
                     book temp = addBookInfo();
-                    WriteToFile(temp.toString());
+                    fileModifiers.WriteToFile(temp.toString());
                 }
                 else if (menuChoice == 2){
-                    ReadFile();
+                    fileModifiers.ReadFile();
                 }
                 else if (menuChoice == 3) {
-                    FileEmptier();
+                    fileModifiers.FileEmptier();
                 }
                 else if (menuChoice == 4) {
-                    DeleteFile();
+                    fileModifiers.DeleteFile();
                 }
                 else if (menuChoice == 5){
                     System.out.println("What is the ISBN you are searching for:");
                     String answer = input.next();
-                    SearchFile(answer);
+                    fileModifiers.SearchFile(answer);
                 }
                 else {
                     System.out.println("Invalid Answer");
@@ -126,90 +125,13 @@ public class Main {
         }
     }
 
-    private static void FileEmptier() {
-        try {
-            FileWriter delete = new FileWriter(bookStore, false);
-            delete.close();
-            System.out.println("File successfully emptied");
-        }catch(Exception e){
-            System.out.println(e);
-        }
-    }
-
     private static book addBookInfo(){
         System.out.println("Type in your Book Title, ISBN, Author and Genre ");
         String title = input.next();
         int isbn = input.nextInt();
         String author = input.next();
         String genre = input.next();
-        book books = new book(title,isbn,author,genre);
-        return books;
+        return new book(title,isbn,author,genre);
     }
 
-    public static void CreateFile() {
-        try {
-            if (bookStore.createNewFile()) {
-                System.out.println("File created: " + bookStore.getName());
-            } else {
-                System.out.println("File already exists.");
-            }
-        } catch (IOException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
-        }
-    }
-    public static void WriteToFile(String v) {
-        try {
-            FileWriter myWriter = new FileWriter(bookStore.getName(), true); //True means append to file contents, False means overwrite
-            myWriter.write(v + "\n");
-            myWriter.close();
-            System.out.println("Successfully wrote to the file.");
-        } catch (IOException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
-        }
-    }
-    public static void DeleteFile() {
-        if (bookStore.delete()) {
-            System.out.println("Deleted the file: " + bookStore.getName());
-        } else {
-            System.out.println("Failed to delete the file.");
-        }
-    }
-    public static void ReadFile() {
-        try {
-            Scanner myReader = new Scanner(bookStore);
-            while (myReader.hasNextLine()) {
-                String data = myReader.nextLine();
-                System.out.println(data);
-
-            }
-            myReader.close();
-            System.out.println(" ");
-        } catch (FileNotFoundException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
-        }
-    }
-    public static void SearchFile(String ISBN) {
-        try {
-            Scanner myReader = new Scanner(bookStore);
-            boolean check = true;
-            while (myReader.hasNextLine()) {
-                String data = myReader.nextLine();
-                if (data.contains(ISBN)){
-                    System.out.println(data);
-                    check = false;
-                }
-            }
-            myReader.close();
-            if (check){
-                System.out.println("ISBN not found");
-            }
-            System.out.println(" ");
-        } catch (FileNotFoundException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
-        }
-    }
 }
