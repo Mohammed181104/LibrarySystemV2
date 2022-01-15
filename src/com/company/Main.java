@@ -95,7 +95,7 @@ public class Main {
 
     private static void MainMenu() {
         while (true) {
-            System.out.println("-Add a book (1)" +"\n" + "-Read File (2)" +"\n" + "-Delete file contents (3)" + "\n" + "-Delete file (4)" + "\n" + "-Search ISBN (5)");
+            System.out.println("-Add a book (1)" +"\n" + "-Read File (2)" +"\n" + "-Delete file contents (3)" + "\n" + "-Delete file (4)" + "\n" + "-Search ISBN (5)" + "\n" + "-Search/Borrow Book (6)");
             try {
                 int menuChoice = input.nextInt();
                 if (menuChoice == 1) {
@@ -116,6 +116,11 @@ public class Main {
                     String answer = input.next();
                     fileModifiers.SearchFile(answer);
                 }
+                else if(menuChoice == 6){
+                    System.out.println("What is the book you are searching for:");
+                    String answer = input.next();
+                    SearchLocation(answer);
+                }
                 else {
                     System.out.println("Invalid Answer");
                 }
@@ -127,13 +132,12 @@ public class Main {
     }
 
     private static book addBookInfo(){
-        System.out.println("Type in your Book Title, ISBN, Author, Genre and Owner");
+        System.out.println("Type in your Book Title, ISBN, Author, Genre");
         String title = input.next();
         int isbn = input.nextInt();
         String author = input.next();
         String genre = input.next();
-        String owner = input.next();
-        return new book(title,isbn,author,genre,owner);
+        return new book(title,isbn,author,genre,"Library");
     }
 
     public static void SearchLocation(String bookName) {
@@ -142,7 +146,7 @@ public class Main {
             boolean check = true;
             while (myReader.hasNextLine()) {
                 String data = myReader.nextLine();
-                if(data.contains(bookName)) {
+                if(data.contains(bookName+",")) {
                     String[] result = data.split(", ");
                     System.out.println(result[4]);
                     check = false;
@@ -150,7 +154,7 @@ public class Main {
             }
             myReader.close();
             if (check){
-                System.out.println("ISBN not found");
+                System.out.println("Book not found");
             }
             System.out.println(" ");
         } catch (FileNotFoundException e) {
