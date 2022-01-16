@@ -95,7 +95,8 @@ public class Main {
 
     private static void MainMenu() {
         while (true) {
-            System.out.println("-Add a book (1)" +"\n" + "-Read File (2)" +"\n" + "-Delete file contents (3)" + "\n" + "-Delete file (4)" + "\n" + "-Search ISBN (5)" + "\n" + "-Search/Borrow Book (6)");
+            System.out.println("-Add a book (1)" +"\n" + "-Read File (2)" +"\n" + "-Delete file contents (3)" + "\n" +
+                    "-Delete file (4)" + "\n" + "-Search ISBN (5)" + "\n" + "-Borrow Book (6)");
             try {
                 int menuChoice = input.nextInt();
                 if (menuChoice == 1) {
@@ -116,10 +117,13 @@ public class Main {
                     String answer = input.next();
                     fileModifiers.SearchFile(answer);
                 }
-                else if(menuChoice == 6){
-                    System.out.println("What is the book you are searching for:");
+                else if(menuChoice == 6) {
+                    System.out.println("What is the book title you want to borrow");
                     String answer = input.next();
-                    SearchLocation(answer);
+                    String bookLocation = SearchLocation(answer);
+                    if(bookLocation.equals("Library")){
+
+                    }
                 }
                 else {
                     System.out.println("Invalid Answer");
@@ -140,27 +144,24 @@ public class Main {
         return new book(title,isbn,author,genre,"Library");
     }
 
-    public static void SearchLocation(String bookName) {
+    public static String SearchLocation(String bookName) {
         try {
             Scanner myReader = new Scanner(bookStore);
-            boolean check = true;
             while (myReader.hasNextLine()) {
                 String data = myReader.nextLine();
                 if(data.contains(bookName+",")) {
                     String[] result = data.split(", ");
-                    System.out.println(result[4]);
-                    check = false;
+                    myReader.close();
+                    return result[4];
                 }
             }
-            myReader.close();
-            if (check){
-                System.out.println("Book not found");
-            }
-            System.out.println(" ");
         } catch (FileNotFoundException e) {
             System.out.println("An error occurred.");
             e.printStackTrace();
         }
+        return "Book not found";
     }
+
+    //public static void BorrowBook()
 
 }

@@ -68,7 +68,8 @@ public class fileModifiers {
             boolean check = true;
             while (myReader.hasNextLine()) {
                 String data = myReader.nextLine();
-                if (data.contains(ISBN)){
+                String[] temp = data.split(", ");
+                if (temp[1].equals(ISBN)){
                     System.out.println(data);
                     check = false;
                 }
