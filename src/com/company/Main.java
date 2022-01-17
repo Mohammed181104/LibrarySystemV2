@@ -18,7 +18,6 @@ public class Main {
             String response = input.next();
             if (response.equalsIgnoreCase("login")) {
                 Login();
-
                 break;
 
             } else if (response.equalsIgnoreCase("register")) {
